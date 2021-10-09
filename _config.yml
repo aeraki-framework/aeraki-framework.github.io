@@ -1,1 +1,3 @@
 theme: jekyll-theme-slate
+title: Aeraki
+description: Manage any layer 7 traffic in Istio service mesh!
