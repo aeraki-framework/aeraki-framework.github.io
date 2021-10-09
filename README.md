@@ -1,4 +1,4 @@
-![ Aeraki ](https://raw.githubusercontent.com/aeraki-framework/aeraki/master/docs/aeraki&istio.png)
+![ Aeraki ](https://images.unsplash.com/photo-1561562176-d1d598e49589?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1470&q=80)
 
 Aeraki [Air-rah-ki] is the Greek word for 'breeze'. While Istio connects microservices in a service mesh, Aeraki provides a framework to allow Istio to support more layer-7 protocols other than just HTTP and gRPC. We hope this breeze can help Istio sail a little further.
 
