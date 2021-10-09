@@ -46,7 +46,7 @@ For most request/response style protocols, the code for traffic manipulation is 
 
 This approach significantly lowers the barrier to write a new Envoy filter: instead of writing a fully functional filter, now you only need to implement the codec interface. In addition to that, the control plane is already in place — Aeraki works at the control plane to provides MetaProtocol configuration and dynamic routes for all protocols built on top of MetaProtocol.
 
-{{< image link="./metaprotocol-proxy-codec.png" caption="Writing an Envoy Filter Before and After MetProtocol" >}}
+![Writing an Envoy Filter Before and After MetProtocol](https://raw.githubusercontent.com/aeraki-framework/meta-protocol-proxy/master/docs/image/metaprotocol-proxy-codec.png)
 
 There are two important data structures in MetaProtocol Proxy: Metadata and Mutation. Metadata is used for routing, and Mutation is used for header manipulation.
 
@@ -62,7 +62,7 @@ The response path is similar to the request path, only in a different direction.
 
 ## An Example
 
-If you need to implement an application protocol based on MetaProtocol, you can follow the below steps(use Thrift as an example):
+If you need to implement an application protocol based on MetaProtocol, you can follow the below steps(use Dubbo as an example):
 
 ### Data Plane
 
@@ -70,16 +70,16 @@ If you need to implement an application protocol based on MetaProtocol, you can 
 
 * Define the protocol with Aeraki `ApplicationProtocol` CRD, as this YAML snippet shows:
 
-{{< text yaml >}}
+```yaml
 apiVersion: metaprotocol.aeraki.io/v1alpha1
 kind: ApplicationProtocol
 metadata:
-  name: thrift
+  name: dubbo
   namespace: istio-system
 spec:
-  protocol: thrift
-  codec: aeraki.meta_protocol.codec.thrift
-{{< /text >}}
+  protocol: dubbo
+  codec: aeraki.meta_protocol.codec.dubbo
+```
 
 ### Control Plane
 
@@ -87,32 +87,56 @@ You don’t need to implement the control plane. Aeraki watches services and tra
 
 ### Protocol selection
 
-Similar to Istio, protocols are identified by service port prefix. Please name service ports with this pattern: tcp-metaprotocol-{application protocol}-xxx. For example, a Thrift service port should be named tcp-metaprotocol-thrift.
+Similar to Istio, protocols are identified by service port prefix. Please name service ports with this pattern: tcp-metaprotocol-{application protocol}-xxx. For example, a Dubbo service port should be named tcp-metaprotocol-dubbo.
 
 ### Traffic management
 
-You can change the route via `MataRouter` CRD. For example: send 20% of the requests to v1 and 80% to v2:
+You can change the route via `MataRouter` CRD. 
 
-{{< text yaml >}}
+* Route the Dubbo requests calling method sayHello to v2:
+
+```yaml
 apiVersion: metaprotocol.aeraki.io/v1alpha1
 kind: MetaRouter
 metadata:
   name: test-metaprotocol-route
 spec:
   hosts:
-    - thrift-sample-server.thrift.svc.cluster.local
+    - org.apache.dubbo.samples.basic.api.demoservice
+  routes:
+    - name: v2
+    - match:
+        attributes:
+          method:
+            exact: sayHello
+      route:
+        - destination:
+            host: org.apache.dubbo.samples.basic.api.demoservice
+            subset: v2
+```
+
+* Send 20% of the requests to v1 and 80% to v2:
+
+```yaml
+piVersion: metaprotocol.aeraki.io/v1alpha1
+kind: MetaRouter
+metadata:
+  name: test-metaprotocol-route
+spec:
+  hosts:
+    - org.apache.dubbo.samples.basic.api.demoservice
   routes:
     - name: traffic-spilt
       route:
         - destination:
-            host: thrift-sample-server.thrift.svc.cluster.local
+            host: org.apache.dubbo.samples.basic.api.demoservice
             subset: v1
           weight: 20
         - destination:
-            host: thrift-sample-server.thrift.svc.cluster.local
+            host: org.apache.dubbo.samples.basic.api.demoservice
             subset: v2
           weight: 80
-{{< /text >}}
+```
 
 ## Demo
 
