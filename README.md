@@ -150,7 +150,7 @@ Screenshot: Service Metrics:
 ![Screenshot: Service Metrics](img/metrics.png)
 
 Recored Demo: Dubbo and Thrift Traffic Management
-[![Thrift and Dubbo traffic management demo](http://i3.ytimg.com/vi/vrjp-Yg3Leg/maxresdefault.jpg)](https://www.youtube.com/watch?v=vrjp-Yg3Leg)
+[Thrift and Dubbo traffic management demo](https://www.youtube.com/watch?v=vrjp-Yg3Leg)
 
 ## Install
 
