@@ -42,7 +42,7 @@ Let’s look into how MetaProtocol works. Before MetaProtocol is introduced, if 
 
 For most request/response style protocols, the code for traffic manipulation is very similar. Therefore, to avoid duplicating these functionalities in different Envoy filters, Aeraki Framework implements most of the common functions of a layer-7 protocol proxy in a single place — the MetaProtocol Proxy filter.
 
-![MetaProtocol Proxy](img/meta-protocol-proxy.png)
+![MetaProtocol Proxy](img/metaprotocol-proxy.png)
 
 This approach significantly lowers the barrier to write a new Envoy filter: instead of writing a fully functional filter, now you only need to implement the codec interface. In addition to that, the control plane is already in place — Aeraki works at the control plane to provides MetaProtocol configuration and dynamic routes for all protocols built on top of MetaProtocol.
 
