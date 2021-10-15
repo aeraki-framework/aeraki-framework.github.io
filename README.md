@@ -17,7 +17,7 @@ Those obstacles make it very hard, if not impossible, for users to manage the tr
 * Cache: Redis, Memcached …
 * Database: MySQL, PostgreSQL, MongoDB …
 
-![ Common Layer-7 Protocols Used in Microservices  ](https://raw.githubusercontent.com/aeraki-framework/aeraki/master/docs/protocols.png)
+![ Common Layer-7 Protocols Used in Microservices  ](img/protocols.png)
 
 If you have already invested a lot of effort in migrating to a service mesh, of course, you want to get the most out of it — managing the traffic of all the protocols in your microservices.
 
@@ -25,7 +25,7 @@ If you have already invested a lot of effort in migrating to a service mesh, of 
 
 To address these problems, we create an open-source project, [Aeraki](https://github.com/aeraki-framework), to provide a non-intrusive, extendable way to manage any layer-7 traffic in an Istio service mesh.
 
-![ Aeraki Architecture  ](https://raw.githubusercontent.com/aeraki-framework/aeraki/master/docs/aeraki-architecture.png)
+![ Aeraki Architecture  ](img/aeraki-architecture.png)
 
 As this diagram shows, Aeraki Framework consists of the following components:
 
@@ -42,11 +42,11 @@ Let’s look into how MetaProtocol works. Before MetaProtocol is introduced, if 
 
 For most request/response style protocols, the code for traffic manipulation is very similar. Therefore, to avoid duplicating these functionalities in different Envoy filters, Aeraki Framework implements most of the common functions of a layer-7 protocol proxy in a single place — the MetaProtocol Proxy filter.
 
-![MetaProtocol Proxy](https://raw.githubusercontent.com/aeraki-framework/meta-protocol-proxy/master/docs/image/meta-protocol-proxy.png)
+![MetaProtocol Proxy](img/meta-protocol-proxy.png)
 
 This approach significantly lowers the barrier to write a new Envoy filter: instead of writing a fully functional filter, now you only need to implement the codec interface. In addition to that, the control plane is already in place — Aeraki works at the control plane to provides MetaProtocol configuration and dynamic routes for all protocols built on top of MetaProtocol.
 
-![Writing an Envoy Filter Before and After MetProtocol](https://raw.githubusercontent.com/aeraki-framework/meta-protocol-proxy/master/docs/image/metaprotocol-proxy-codec.png)
+![Writing an Envoy Filter Before and After MetProtocol](img/metaprotocol-proxy-codec.png)
 
 There are two important data structures in MetaProtocol Proxy: Metadata and Mutation. Metadata is used for routing, and Mutation is used for header manipulation.
 
@@ -54,11 +54,11 @@ At the request path, the decoder(the decode method of the codec implementation) 
 
 A custom filter can populate the Mutation data structure with arbitrary key-value pairs if the request needs to be modified: adding a header or changing the value of a header. Then the Mutation data structure will be passed to the encoder(the encode method of the codec implementation). The encoder is responsible for writing the key-value pairs into the wire protocol.
 
-![Request Path](https://raw.githubusercontent.com/aeraki-framework/meta-protocol-proxy/master/docs/image/request-path.png)
+![Request Path](img/request-path.png)
 
 The response path is similar to the request path, only in a different direction.
 
-![Response Path](https://raw.githubusercontent.com/aeraki-framework/meta-protocol-proxy/master/docs/image/response-path.png)
+![Response Path](img/response-path.png)
 
 ## An Example
 
@@ -147,7 +147,7 @@ spec:
 [Live Demo: Service Metrics: Prometheus](http://aeraki.zhaohuabing.com:9090/new/graph?g0.expr=envoy_dubbo_inbound_20880___response_success&g0.tab=0&g0.stacked=1&g0.range_input=1h&g1.expr=envoy_dubbo_outbound_20880__org_apache_dubbo_samples_basic_api_demoservice_request&g1.tab=0&g1.stacked=1&g1.range_input=1h&g2.expr=envoy_thrift_inbound_9090___response&g2.tab=0&g2.stacked=1&g2.range_input=1h&g3.expr=envoy_thrift_outbound_9090__thrift_sample_server_thrift_svc_cluster_local_response_success&g3.tab=0&g3.stacked=1&g3.range_input=1h&g4.expr=envoy_thrift_outbound_9090__thrift_sample_server_thrift_svc_cluster_local_request&g4.tab=0&g4.stacked=1&g4.range_input=1h)
 
 Screenshot: Service Metrics:
-![Screenshot: Service Metrics](https://raw.githubusercontent.com/aeraki-framework/aeraki/master/docs/metrics.png)
+![Screenshot: Service Metrics](img/metrics.png)
 
 Recored Demo: Dubbo and Thrift Traffic Management
 [![Thrift and Dubbo traffic management demo](http://i3.ytimg.com/vi/vrjp-Yg3Leg/maxresdefault.jpg)](https://www.youtube.com/watch?v=vrjp-Yg3Leg)
